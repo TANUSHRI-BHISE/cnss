@@ -1,0 +1,89 @@
+Short Form	Full Form	Topic / Purpose
+OSI	Open Systems Interconnection	7-layer network model
+LAN	Local Area Network	Small local network (office/home)
+WAN	Wide Area Network	Large-scale network (Internet)
+NIC	Network Interface Card	Connects computer to network (Layer 2)
+Hub	—	Physical device that broadcasts all data
+Switch	—	Forwards frames using MAC addresses (Layer 2)
+Router	—	Routes packets using IP (Layer 3)
+IP	Internet Protocol	Logical addressing & packet routing
+IPv4	Internet Protocol version 4	32-bit addressing (e.g., 192.168.1.1)
+IPv6	Internet Protocol version 6	128-bit addressing (e.g., 2001:db8::1)
+NAT	Network Address Translation	Converts private IP ↔ public IP
+CIDR	Classless Inter-Domain Routing	Efficient IP allocation using prefix (e.g., /24)
+ARP	Address Resolution Protocol	Maps IP → MAC address
+RARP	Reverse Address Resolution Protocol	Maps MAC → IP address
+ICMP	Internet Control Message Protocol	Error & control messages (e.g., ping)
+IGMP	Internet Group Management Protocol	Manages multicast group membership
+RIP	Routing Information Protocol	Distance Vector Routing (uses hop count)
+OSPF	Open Shortest Path First	Link State Routing (uses Dijkstra’s algo)
+BGP	Border Gateway Protocol	Path Vector Routing (used between ISPs)
+MPLS	Multiprotocol Label Switching	Label-based fast packet forwarding
+AODV	Ad hoc On-Demand Distance Vector	MANET routing, on-demand path creation
+DSR	Dynamic Source Routing	MANET routing, source keeps full path
+MANET	Mobile Ad-hoc Network	Wireless, infrastructure-less network
+AS	Autonomous System	Independent network under one admin (used in BGP)
+QoS	Quality of Service	Controls latency and priority in networks
+MTU	Maximum Transmission Unit	Largest packet size that can be sent
+TTL	Time To Live	Limits packet lifetime in network
+MAC	Media Access Control	Hardware address at Data Link layer
+ISP	Internet Service Provider	Provides Internet connectivity
+FQDN	Fully Qualified Domain Name	Complete domain name (e.g., www.example.com
+)
+
+✅ Viva Quick-Tips:
+
+RIP = hop count, OSPF = shortest path, BGP = policy routing
+
+ARP ↔ MAC, RARP ↔ IP
+
+NAT = private ↔ public IP, CIDR = flexible subnetting
+
+AODV / DSR = mobile networks (MANET)
+---------------------------------------------------
+Protocol	Layer	Port	Function
+DNS	Application	53 (UDP)	Name ↔ IP
+HTTP	Application	80 (TCP)	Web pages
+HTTPS	Application	443 (TCP)	Secure web
+SMTP	Application	25 (TCP)	Send email
+POP3	Application	110 (TCP)	Receive email
+IMAP	Application	143 (TCP)	Sync email
+FTP	Application	20/21 (TCP)	File transfer
+TELNET	Application	23 (TCP)	Remote login
+DHCP	Application	67/68 (UDP)	IP assignment
+SNMP	Application	161 (UDP)	Device monitoring
+-------------------------------------------------------
+| **Protocol** | **Full Form**                       | **Port No.**                     | **Function / Purpose**                        |
+| ------------ | ----------------------------------- | -------------------------------- | --------------------------------------------- |
+| **DNS**      | Domain Name System                  | **53 (UDP)**                     | Converts **domain names ↔ IP addresses**      |
+| **HTTP**     | HyperText Transfer Protocol         | **80 (TCP)**                     | Transfers **web pages** (unsecured)           |
+| **HTTPS**    | HyperText Transfer Protocol Secure  | **443 (TCP)**                    | **Secure** web communication using SSL/TLS    |
+| **SMTP**     | Simple Mail Transfer Protocol       | **25 (TCP)**                     | **Sends emails** from client → server         |
+| **POP3**     | Post Office Protocol v3             | **110 (TCP)**                    | **Downloads** emails from mail server         |
+| **IMAP**     | Internet Message Access Protocol    | **143 (TCP)**                    | **Synchronizes** email (keeps copy on server) |
+| **FTP**      | File Transfer Protocol              | **20 (Data), 21 (Control)** TCP  | **Uploads/downloads** files                   |
+| **TELNET**   | Telecommunication Network           | **23 (TCP)**                     | **Remote login** to another computer          |
+| **DHCP**     | Dynamic Host Configuration Protocol | **67 (Server), 68 (Client)** UDP | **Automatically assigns IP** addresses        |
+| **SNMP**     | Simple Network Management Protocol  | **161 (UDP)**                    | **Monitors & manages** network devices        |
+-----------------------------------------------------
+| Term    | Full Form                | Purpose                                                        |
+| ------- | ------------------------ | -------------------------------------------------------------- |
+| **SSL** | Secure Sockets Layer     | Original encryption protocol for securing data on the internet |
+| **TLS** | Transport Layer Security | Improved and modern version of SSL                             |
+---------------------------------------------------------
+Short Form	Full Form	Topic
+TCP	Transmission Control Protocol	Reliable, connection-oriented transport
+UDP	User Datagram Protocol	Unreliable, connectionless transport
+SCTP	Stream Control Transmission Protocol	Reliable, multi-stream transport
+RTP	Real-time Transport Protocol	Used in real-time audio/video
+QoS	Quality of Service	Manages and prioritizes network traffic
+DiffServ	Differentiated Services	Type of QoS model for traffic classes
+IP	Internet Protocol	Network layer addressing & routing
+HTTP	HyperText Transfer Protocol	Web communication (uses TCP)
+HTTPS	HyperText Transfer Protocol Secure	Secure version of HTTP
+FTP	File Transfer Protocol	File sharing (uses TCP)
+DNS	Domain Name System	Converts domain name ↔ IP address
+VoIP	Voice over Internet Protocol	Voice communication using Internet
+ACK	Acknowledgment	Used in TCP for reliability
+
+
