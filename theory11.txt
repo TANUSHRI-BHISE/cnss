@@ -1,0 +1,54 @@
+Sure ✅ — here’s a simple Python program that performs DNS lookup both ways:
+
+If you give a domain name (URL) → it returns the IP address.
+
+If you give an IP address → it returns the domain name.
+
+🐍 Python Code — DNS Lookup (Both Ways)
+import socket
+
+def dns_lookup(query):
+    try:
+        # Check if input is an IP address
+        socket.inet_aton(query)
+        # If no exception, it's a valid IP → perform reverse lookup
+        domain_name = socket.gethostbyaddr(query)
+        print(f"IP Address: {query}")
+        print(f"Domain Name: {domain_name[0]}")
+    except socket.error:
+        # Not a valid IP → treat it as a hostname
+        try:
+            ip_address = socket.gethostbyname(query)
+            print(f"Domain Name: {query}")
+            print(f"IP Address: {ip_address}")
+        except socket.gaierror:
+            print("❌ Invalid domain name or IP address. Lookup failed.")
+
+# ---- Main Program ----
+query = input("Enter a domain name or IP address: ")
+dns_lookup(query)
+
+🧠 How It Works
+
+You enter either a domain (like www.google.com) or an IP (like 8.8.8.8).
+
+The code:
+
+Checks if it’s an IP address using socket.inet_aton().
+
+If yes → performs reverse DNS lookup (socket.gethostbyaddr()).
+
+If not → performs forward DNS lookup (socket.gethostbyname()).
+
+Prints the corresponding result.
+
+🧩 Example Output
+Case 1 — Domain to IP
+Enter a domain name or IP address: www.google.com
+Domain Name: www.google.com
+IP Address: 142.250.183.132
+
+Case 2 — IP to Domain
+Enter a domain name or IP address: 8.8.8.8
+IP Address: 8.8.8.8
+Domain Name: dns.google

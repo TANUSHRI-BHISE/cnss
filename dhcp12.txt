@@ -1,0 +1,21 @@
+Mandatory Steps
+
+DHCP Server Configuration
+
+Configure DHCP pool with IP range, default gateway, and subnet mask.
+
+Exclude any static IPs if needed.
+
+Assign IPs to PCs using DHCP
+
+Set PCs to obtain IP automatically.
+
+PCs must receive IP from the DHCP pool.
+
+Verify IPs
+
+On each PC, run ipconfig to ensure it got the correct IP, subnet mask, and gateway.
+
+Test Connectivity
+
+Ping the DHCP server/router and optionally other PCs to confirm network connectivity.

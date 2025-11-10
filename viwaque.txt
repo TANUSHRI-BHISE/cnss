@@ -1,0 +1,816 @@
+🧠 Viva Questions for 3-Router Network (RIP/OSPF/BGP)
+🔹 Basic Questions
+
+Q: What is the purpose of a router?
+A: A router connects multiple networks and forwards packets based on their destination IP address.
+
+Q: What is routing?
+A: Routing is the process of selecting the best path to send data from source to destination in a network.
+
+Q: What are the types of routing?
+A:
+
+Static Routing
+
+Dynamic Routing (RIP, OSPF, BGP)
+
+🔹 RIP (Routing Information Protocol)
+
+Q: What does RIP stand for?
+A: Routing Information Protocol.
+
+Q: Which layer does RIP work on?
+A: Network Layer (Layer 3 of the OSI Model).
+
+Q: What metric does RIP use to find the best path?
+A: Hop count (number of routers between source and destination).
+
+Q: What is the maximum hop count allowed in RIP?
+A: 15 hops (16 means unreachable).
+
+Q: What are the versions of RIP?
+A: RIP version 1 (classful) and RIP version 2 (classless).
+
+Q: Difference between RIP v1 and RIP v2?
+
+Feature	RIP v1	RIP v2
+Type	Classful	Classless
+Supports Subnet Mask	❌ No	✅ Yes
+Authentication	❌ No	✅ Yes
+Multicast updates	❌ Broadcast	✅ Multicast (224.0.0.9)
+
+Q: What command enables RIP on a router?
+A:
+
+router rip
+version 2
+network <network_id>
+
+🔹 OSPF (Open Shortest Path First)
+
+Q: What does OSPF stand for?
+A: Open Shortest Path First.
+
+Q: Which algorithm does OSPF use?
+A: Dijkstra’s Shortest Path First algorithm.
+
+Q: What metric does OSPF use?
+A: Cost (based on bandwidth).
+
+Q: What type of protocol is OSPF — distance vector or link state?
+A: Link State Protocol.
+
+Q: Can OSPF support VLSM and CIDR?
+A: Yes, it supports both.
+
+🔹 BGP (Border Gateway Protocol)
+
+Q: What does BGP stand for?
+A: Border Gateway Protocol.
+
+Q: Is BGP an interior or exterior routing protocol?
+A: Exterior Gateway Protocol (EGP).
+
+Q: Which metric does BGP use?
+A: Path attributes (like AS Path, Next Hop, Local Preference).
+
+Q: Where is BGP commonly used?
+A: Between ISPs and large enterprise networks (on the Internet).
+
+🔹 Configuration and Troubleshooting
+
+Q: What command shows learned routes?
+A: show ip route
+
+Q: What does the letter “R” mean in the routing table?
+A: Route learned via RIP.
+
+Q: What does “C” mean in the routing table?
+A: Directly connected network.
+
+Q: What command checks connectivity?
+A: ping <destination IP>
+
+Q: What is the function of the “no shutdown” command?
+A: It activates an interface that is administratively down.
+
+Q: Why use the “no auto-summary” command in RIP?
+A: To disable automatic classful summarization and allow subnetted networks.
+
+🔹 Conceptual / Viva Reasoning
+
+Q: Why do we need three routers in this experiment?
+A: To demonstrate dynamic route learning between multiple networks.
+
+Q: What happens if you don’t set a default gateway on PCs?
+A: They can only communicate within their local network, not across routers.
+
+Q: How can you verify routing updates are being sent?
+A: Use debug ip rip in CLI.
+
+Q: What is the difference between static and dynamic routing?
+A: Static routes are manually configured; dynamic routes are learned automatically via protocols like RIP, OSPF, BGP.
+
+Q: What does “hop count = 16” mean in RIP?
+A: The destination is unreachable.
+-------------------------------------------------------------------------------------
+prac 4dikjistra
+Q: What is the difference between link-state and distance-vector routing?
+A: DV routers exchange whole routing vectors with neighbors (hop counts/costs). LS routers flood link-state advertisements (LSAs) to the entire network and each router computes shortest paths (Dijkstra) from full topology.
+
+Q: Which algorithms implement DV and LS?
+A: DV typically uses Bellman-Ford style updates; LS uses Dijkstra’s shortest path first (SPF) algorithm.
+
+Q: What data does each router maintain?
+A: DV: routing table with destination, next-hop, cost; LS: link-state database (graph of network), and computed routing table after SPF.
+
+Q: What is a routing table entry?
+A: Destination, cost (metric), next hop (and sometimes interface, expiry/timer).
+
+
+1. Basic understanding
+
+Q: What is a Link State Routing Protocol?
+A: A routing protocol where each router has complete knowledge of the network topology and computes the shortest path to every node (e.g., using Dijkstra’s algorithm).
+
+Q: What is the difference between Link State and Distance Vector protocols?
+A:
+
+Feature	Link State	Distance Vector
+Knowledge	Complete topology	Only neighbors’ info
+Algorithm	Dijkstra	Bellman-Ford
+Convergence	Fast	Slower
+Updates	Triggered	Periodic
+
+Q: Which protocol did you implement and why?
+A: Implemented Link State using Dijkstra because it finds the shortest path based on complete topology information.
+
+2. Algorithm-specific
+
+Q: How does Dijkstra’s algorithm work?
+A:
+
+Initialize distances: source node = 0, others = ∞
+
+Pick the unvisited node with the smallest distance.
+
+Update distances to its neighbors if a shorter path is found.
+
+Repeat until all nodes are visited.
+
+Q: How do you represent the network in your program?
+A: Using an adjacency matrix or adjacency list with weights representing link cost.
+
+Q: How do you handle unreachable nodes?
+A: Distance remains ∞, and the path is considered unreachable.
+
+3. Program-related
+
+Q: What data structures did you use?
+A: Arrays for distances, a set for visited nodes, and optionally a priority queue for efficiency.
+
+Q: How did you print the shortest path?
+A: Using a parent array that stores the previous node for each node, then trace back from destination to source.
+
+Q: How do you update the routing table?
+A: After Dijkstra finishes, the next-hop for each destination is derived from the path found.
+
+4. Testing & Output
+
+Q: How did you verify your program?
+A: By comparing shortest paths manually or with sample network graphs.
+
+Q: Can this program handle dynamic changes (link failure)?
+A: Yes, by updating the adjacency matrix and rerunning Dijkstra.
+
+5. Advanced questions
+
+Q: What is the time complexity of your program?
+A:
+
+Using adjacency matrix: O(V²)
+
+Using adjacency list + min-priority queue: O(E log V)
+
+Q: Why is Link State preferred in large networks?
+A: Fast convergence and accurate routing due to complete topology knowledge.
+
+Q: Difference between static routing and dynamic routing?
+A: Static is manually configured; dynamic adapts automatically to network changes.
+----------------------------------------------------------------------------------------
+prac 5
+1. Basics of TCP and Sockets
+
+Q: What is TCP?
+A: Transmission Control Protocol – connection-oriented, reliable protocol used for end-to-end communication.
+
+Q: Why did you use TCP and not UDP?
+A: TCP ensures reliable delivery, sequencing, and error checking, which is essential for file transfer and “Hello” messaging.
+
+Q: What is a socket?
+A: An endpoint for communication between two devices over a network, identified by IP address + port number.
+
+2. Program-specific questions
+
+Q: How did you implement “Hello” message exchange?
+A: Client sends a string like “Hello” → Server receives and replies back → Display at both ends.
+
+Q: How did you implement file transfer?
+A:
+
+Open the file in read-binary mode at sender.
+
+Read in chunks and send via socket.send().
+
+Receive chunks at receiver via socket.recv() and write to file.
+
+Q: How did you handle end-of-file or completion of transfer?
+A: Either send a special termination message or check when no more bytes are received.
+
+Q: What ports did you use?
+A: Any free port >1024 (e.g., 5000, 6000), because ports <1024 are reserved.
+
+3. Network and connection questions
+
+Q: How do client and server connect?
+A: Server binds to an IP and port → listens → client connects using server’s IP and port → handshake completes → data transfer.
+
+Q: How does TCP ensure reliable delivery?
+A: By using ACKs, sequence numbers, retransmissions, and flow control.
+
+Q: What happens if the connection is lost during file transfer?
+A: TCP automatically retransmits lost packets, but partial files may need manual restart or resuming mechanism in the program.
+
+4. Programming and coding questions
+
+Q: What libraries did you use?
+A: In Python: socket, optionally os for file operations.
+In C/C++: <sys/socket.h>, <netinet/in.h>, <arpa/inet.h>, <unistd.h>.
+
+Q: How do you differentiate between sending a message and sending a file?
+A: By using a protocol or flag in the data stream, e.g., first send a header/message type.
+
+Q: Did you handle large files?
+A: Yes, by sending in chunks, not the entire file at once.
+
+5. Testing & output questions
+
+Q: How did you test the program?
+A: On the same machine (localhost) or using two PCs in a LAN. Tested both “Hello” messaging and file transfer.
+
+Q: Can this program work over wireless networks?
+A: Yes, TCP is network-independent; works over any IP-based network.
+
+6. Advanced/extra questions
+
+Q: Difference between TCP and UDP?
+A: TCP = reliable, connection-oriented; UDP = unreliable, connectionless.
+
+Q: What is the maximum size of data you can send in one TCP packet?
+A: Limited by MTU (Maximum Transmission Unit), typically 1500 bytes for Ethernet; TCP handles segmentation automatically.
+
+Q: Can multiple clients connect to the server simultaneously?
+A: Yes, using multi-threading or select() for handling multiple sockets.
+
+Q: What is socket timeout?
+A: Maximum time socket waits for send/receive before throwing an error.
+----------------------------------------------------------------------------------------
+1. Basics of UDP and Sockets
+
+Q: What is UDP?
+A: User Datagram Protocol – connectionless, unreliable, faster than TCP; does not guarantee delivery or order.
+
+Q: Why did you choose UDP for file transfer?
+A: For faster transfer and to demonstrate connectionless communication. (Note: Reliable delivery must be handled manually if needed.)
+
+Q: What is a socket in UDP?
+A: An endpoint for sending or receiving data over the network, identified by IP + port number.
+
+2. Program-specific questions
+
+Q: How does your program send files?
+A:
+
+Open file in binary mode.
+
+Read file in chunks.
+
+Send each chunk via socket.sendto() with the receiver’s IP and port.
+
+Receiver writes chunks into a file using socket.recvfrom().
+
+Q: How do you handle different file types (script, text, audio, video)?
+A: Treat all files as binary data, read and write in binary mode; file extension/type doesn’t affect UDP transfer.
+
+Q: How do you know when the file transfer is complete?
+A: Send a special end-of-file (EOF) marker or a final packet indicating transfer completion.
+
+3. Networking and connection questions
+
+Q: How does UDP differ from TCP in terms of connection?
+A: UDP is connectionless, no handshake; TCP is connection-oriented, uses a three-way handshake.
+
+Q: How do you ensure packets arrive in order?
+A: UDP does not guarantee order. You can add sequence numbers in each packet for manual ordering.
+
+Q: How do you handle packet loss?
+A: UDP does not retransmit automatically. Optional: implement acknowledgment system in the program.
+
+4. Programming-related questions
+
+Q: Which libraries did you use?
+A: Python: socket, optionally os for file operations.
+C/C++: <sys/socket.h>, <netinet/in.h>, <arpa/inet.h>, <unistd.h>.
+
+Q: How do you send large files?
+A: Break file into smaller chunks (e.g., 1024 bytes) and send sequentially.
+
+Q: How do you differentiate between different file transfers in the same program?
+A: By using file name headers or a file type indicator before sending the file content.
+
+Q: How do you ensure the receiver can reconstruct the file correctly?
+A: Maintain chunk order and ensure all chunks are received, possibly using sequence numbers or EOF marker.
+
+5. Testing & output questions
+
+Q: How did you test file transfer?
+A: Using two machines in LAN, tested all four file types. Verified integrity by comparing files before and after transfer.
+
+Q: Can this program work over the internet?
+A: Yes, but you need public IPs or port forwarding to handle NAT.
+
+Q: How do you handle errors if a packet is lost?
+A: You can retransmit lost packets manually using a custom protocol, since UDP does not handle retransmission.
+
+6. Advanced/extra questions
+
+Q: Can UDP handle multiple clients?
+A: Yes, the server can receive from any client IP/port; use threads for simultaneous transfers.
+
+Q: Why is UDP faster than TCP?
+A: No connection setup, no acknowledgments, no ordering—less overhead.
+
+Q: What are the disadvantages of UDP for file transfer?
+A: Packet loss, no order guarantee, no built-in reliability.
+
+Q: How can you make UDP file transfer reliable?
+A: Implement acknowledgments, sequence numbers, checksums, and retransmissions manually.
+------------------------------------------------------------------------------------------
+pract 7
+1. Basics of Protocols
+
+Q: What is HTTP?
+A: HyperText Transfer Protocol – used for transmitting web pages over the Internet. Works on TCP port 80.
+
+Q: What is HTTPS?
+A: HTTP over SSL/TLS, providing encryption and secure communication. Works on TCP port 443.
+
+Q: What is FTP?
+A: File Transfer Protocol – used to upload/download files between client and server. Works on TCP port 21 (control) and port 20 (data).
+
+Q: Difference between HTTP and HTTPS?
+A: HTTPS encrypts data using SSL/TLS, ensuring confidentiality, integrity, and authentication, while HTTP is plaintext.
+
+2. Packet Tracer and Performance Analysis
+
+Q: How did you simulate HTTP/HTTPS/FTP in Packet Tracer?
+A:
+
+Added PCs and server.
+
+Configured IP addresses.
+
+Enabled HTTP/HTTPS/FTP services on server.
+
+Used Web Browser/FTP application on PC to generate traffic.
+
+Captured traffic using Simulation mode to analyze performance.
+
+Q: How do you analyze performance?
+A: By checking:
+
+Delay/latency for requests and responses.
+
+Packet size and number of packets.
+
+Throughput or time taken for file transfer.
+
+Encryption overhead (HTTPS vs HTTP).
+
+Q: What is the difference in performance between HTTP and HTTPS?
+A: HTTPS is slightly slower due to SSL/TLS handshake and encryption/decryption, but more secure.
+
+Q: How does FTP performance compare?
+A: FTP can be slower for large files if active mode is used due to separate control and data channels. Passive mode improves performance in NAT scenarios.
+
+3. Network and packet analysis
+
+Q: How did you capture packets?
+A: Using Packet Tracer Simulation mode, clicked each packet to see protocol, source/destination, packet size, and flags.
+
+Q: How can you distinguish HTTP, HTTPS, and FTP packets?
+A: By port number and protocol type in the packet info:
+
+HTTP → port 80
+
+HTTPS → port 443
+
+FTP → ports 20/21
+
+Q: Can you see the data content in Packet Tracer?
+A: Yes for HTTP and FTP (plaintext), but HTTPS content is encrypted, so only headers/metadata are visible.
+
+4. Practical/experiment-specific
+
+Q: How did you measure transfer time?
+A: By observing the Simulation clock or number of timesteps for request/response or file transfer.
+
+Q: What factors affect performance in Packet Tracer?
+A:
+
+Link speed (default: 10 Mbps, 100 Mbps)
+
+Packet size
+
+Network topology (number of routers/switches)
+
+Protocol overhead (encryption in HTTPS)
+
+Q: How did you configure FTP file transfer?
+A:
+
+Enabled FTP server on server PC.
+
+Used FTP client on PC → commands like get, put to download/upload files.
+
+5. Advanced/extra questions
+
+Q: Why is HTTPS slower than HTTP?
+A: Due to SSL/TLS handshake, key exchange, and encryption/decryption.
+
+Q: Difference between Active and Passive FTP?
+A:
+
+Active: server initiates data connection → firewall issues possible.
+
+Passive: client initiates both connections → better for NAT/firewalls.
+
+Q: What is throughput, and how can you measure it?
+A: Throughput = amount of data transferred per unit time; measure using Simulation mode and time/duration of transfer.
+
+Q: How does encryption affect network load?
+A: Encrypted packets are slightly larger due to SSL/TLS headers, increasing overhead.
+---------------------------------------------------------------------------------------
+pract 8
+1. Basics of SSL/TLS
+
+Q: What is SSL/TLS?
+A: Secure Sockets Layer (SSL) / Transport Layer Security (TLS) – protocols used to encrypt communication between client and server over the internet.
+
+Q: Why do websites use SSL/TLS?
+A: To ensure:
+
+Confidentiality – data is encrypted.
+
+Integrity – data is not altered in transit.
+
+Authentication – verifies server identity.
+
+Q: Difference between SSL and TLS?
+A: TLS is the updated, more secure version of SSL. Modern websites use TLS 1.2 or 1.3.
+
+2. Packet Capture Questions
+
+Q: How did you capture SSL packets in Wireshark?
+A:
+
+Open Wireshark and select network interface.
+
+Apply filter: tcp.port == 443 (HTTPS) or ssl / tls.
+
+Visit an SSL-secured website in browser.
+
+Observe handshake and encrypted traffic.
+
+Q: Can you read the data exchanged in SSL packets?
+A: No, data is encrypted; only headers, handshake messages, and certificates are visible.
+
+Q: What types of packets did you observe?
+A:
+
+Client Hello – client proposes encryption algorithms.
+
+Server Hello – server selects algorithm.
+
+Certificate – server sends digital certificate.
+
+Key Exchange – generates session key.
+
+Encrypted Application Data – actual encrypted traffic.
+
+3. Handshake & Encryption
+
+Q: What is an SSL handshake?
+A: A process to establish a secure connection by negotiating encryption algorithms, authenticating the server, and generating a session key.
+
+Q: What algorithms are used in SSL/TLS?
+A:
+
+Asymmetric encryption (RSA, ECDHE) for key exchange.
+
+Symmetric encryption (AES, 3DES) for bulk data.
+
+Hashing (SHA) for integrity.
+
+Q: What is a session key?
+A: A temporary symmetric key used to encrypt/decrypt the actual data exchanged during a session.
+
+4. Wireshark-specific questions
+
+Q: How can you identify SSL/TLS traffic in Wireshark?
+A: Use filters like tls or tcp.port==443. Packet Info shows Handshake, Application Data, Alerts.
+
+Q: Can you decrypt SSL traffic in Wireshark?
+A: Only if you have server private key or session key (like browser SSL key log). Otherwise, content is encrypted.
+
+Q: What is the purpose of the digital certificate?
+A: To authenticate the server and provide the public key for key exchange.
+
+5. Practical/experiment questions
+
+Q: Which websites did you visit for the practical?
+A: Any SSL-secured website like banking or e-commerce (example: https://www.amazon.com).
+
+Q: What did you observe in terms of packet size and number?
+A: SSL handshake involves several packets (ClientHello, ServerHello, Certificate, Key Exchange) before actual encrypted application data flows.
+
+Q: What is the advantage of SSL?
+A: Provides secure communication, prevents eavesdropping, tampering, and phishing attacks.
+-------------------------------------------------------------------------------------
+9. S/MIME Email Security (Microsoft Outlook)
+Basics
+
+Q: What is S/MIME?
+A: Secure/Multipurpose Internet Mail Extensions – a protocol that provides encryption, digital signatures, and authentication for emails.
+
+Q: Why use S/MIME?
+A: To ensure confidentiality, integrity, and authenticity of email messages.
+
+Implementation Steps Questions
+
+Q: How did you configure S/MIME in Outlook?
+A:
+
+Obtain a digital certificate from a trusted Certificate Authority (CA).
+
+Install the certificate in Outlook.
+
+Go to File → Options → Trust Center → Email Security.
+
+Enable “Encrypt contents and attachments for outgoing messages” and “Add digital signature”.
+
+Send an email to a recipient who also has a certificate installed.
+
+Q: How is email encrypted?
+A: Using the recipient’s public key; only their private key can decrypt it.
+
+Q: How is a digital signature verified?
+A: Recipient uses the sender’s public key to verify the signature, ensuring authenticity.
+
+Practical Questions
+
+Q: What types of security does S/MIME provide?
+A:
+
+Encryption → prevents eavesdropping.
+
+Digital Signature → ensures sender authenticity.
+
+Integrity → detects message tampering.
+
+Q: Can S/MIME work without certificates?
+A: No, certificates are required for encryption and signing.
+
+Q: What is the difference between signing and encrypting an email?
+A:
+
+Signing → proves sender’s identity, content not encrypted.
+
+Encrypting → protects content, recipient must decrypt.
+
+10. IPsec (ESP and AH) using Wireshark
+Basics
+
+Q: What is IPsec?
+A: Internet Protocol Security – protocol suite that provides authentication, integrity, and encryption for IP packets.
+
+Q: What are ESP and AH?
+A:
+
+ESP (Encapsulating Security Payload): Provides encryption, integrity, and authentication.
+
+AH (Authentication Header): Provides integrity and authentication but no encryption.
+
+Packet Capture Questions
+
+Q: How did you capture IPsec packets?
+A:
+
+Configure IPsec tunnel between two machines (or in Packet Tracer).
+
+Send pings or any traffic.
+
+Use Wireshark with filter esp or ah to capture packets.
+
+Q: Can you read IPsec payload in Wireshark?
+A:
+
+AH → payload visible but integrity checked.
+
+ESP → payload is encrypted, cannot read without keys.
+
+Q: What fields are included in ESP and AH headers?
+A:
+
+ESP: SPI (Security Parameter Index), Sequence Number, Encrypted Payload, Optional Authentication.
+
+AH: SPI, Sequence Number, Integrity Check Value (ICV).
+
+Protocol/Implementation Questions
+
+Q: Difference between transport mode and tunnel mode in IPsec?
+A:
+
+Transport mode → encrypts only payload, header unchanged.
+
+Tunnel mode → encrypts entire IP packet, adds new IP header.
+
+Q: How does IPsec provide security?
+A: Using encryption, authentication, integrity, and anti-replay protection.
+
+Q: Can AH and ESP be used together?
+A: Yes, sometimes AH ensures integrity while ESP encrypts the payload.
+
+Practical/Scenario Questions
+
+Q: How did you verify that IPsec is working?
+A: Observed ESP/AH packets in Wireshark and noted encrypted or authenticated payloads.
+
+Q: Why is ESP more commonly used than AH?
+A: Because ESP provides both encryption and integrity, whereas AH provides only integrity.
+
+Q: Can IPsec work over the internet?
+A: Yes, commonly used in VPNs (Virtual Private Networks) for secure communication.
+------------------------------------------------------------------------------------------
+prac 11
+1. Basics of DNS
+
+Q: What is DNS?
+A: Domain Name System – translates human-readable domain names (like www.google.com) into IP addresses and vice versa.
+
+Q: Why is DNS important?
+A: Computers communicate using IP addresses, but humans remember domain names, so DNS acts as a translator.
+
+Q: What are the types of DNS records?
+A:
+
+A record: Domain → IPv4 address
+
+AAAA record: Domain → IPv6 address
+
+PTR record: IP → Domain (reverse lookup)
+
+CNAME: Alias for another domain
+
+MX: Mail server for a domain
+
+2. Program-specific Questions
+
+Q: How did your program perform forward lookup (URL → IP)?
+A: Used a function like socket.gethostbyname(domain) in Python or gethostbyname() in C to fetch IP.
+
+Q: How did your program perform reverse lookup (IP → URL)?
+A: Used a function like socket.gethostbyaddr(ip) in Python or gethostbyaddr() in C to fetch the domain name.
+
+Q: What data structure or library did you use?
+A: Python: socket library; C/C++: arpa/inet.h and <netdb.h> functions.
+
+Q: How does your program handle invalid input?
+A: Wrapped function calls in try-except or error handling; prints “invalid domain/IP” if lookup fails.
+
+3. Networking Questions
+
+Q: What is the difference between forward DNS and reverse DNS?
+A:
+
+Forward DNS → domain name → IP
+
+Reverse DNS → IP → domain name
+
+Q: Can reverse DNS always find a domain?
+A: No, not all IP addresses have PTR records for reverse lookup.
+
+Q: Which port does DNS use?
+A: Port 53, both UDP (common) and TCP (for large queries).
+
+4. Practical/Program Questions
+
+Q: How did you test your program?
+A: By providing sample IPs and domains and verifying the results against real DNS servers.
+
+Q: Can your program work for both IPv4 and IPv6?
+A: Yes, if you handle AAAA records for IPv6.
+
+Q: How is your program different from a web-based DNS tool?
+A: It directly queries DNS functions or servers programmatically, no browser needed.
+-------------------------------------------------------------------------------------
+prac 12
+1. Basics of DHCP
+
+Q: What is DHCP?
+A: Dynamic Host Configuration Protocol – automatically assigns IP addresses, subnet masks, gateway, and DNS to clients in a network.
+
+Q: Why use DHCP instead of static IPs?
+A: Simplifies network management, avoids IP conflicts, and supports dynamic IP assignment.
+
+Q: Which port does DHCP use?
+A:
+
+UDP 67 → Server
+
+UDP 68 → Client
+
+2. DHCP Configuration Questions
+
+Q: How did you install DHCP server?
+A:
+
+On Windows: Add Roles and Features → DHCP Server.
+
+On Linux: sudo apt install isc-dhcp-server (Debian/Ubuntu).
+
+Q: How did you configure DHCP?
+A:
+
+Define IP address pool / range.
+
+Set subnet mask, gateway, DNS.
+
+Enable and start DHCP service.
+
+Configure clients to obtain IP automatically.
+
+Q: How can you verify DHCP assignment?
+A:
+
+ipconfig /all on Windows client.
+
+ifconfig or ip addr show on Linux client.
+
+Check DHCP server logs for leases.
+
+3. Remote Software Installation Questions
+
+Q: How did you install software remotely?
+A: Using remote management tools or scripting:
+
+Windows: PowerShell Invoke-Command or psexec.
+
+Linux: SSH + scp + apt/yum install.
+
+Q: What are the steps in your program?
+A:
+
+Connect to remote machine (IP, credentials).
+
+Copy installer/script to remote machine.
+
+Execute the installer remotely.
+
+Verify installation success.
+
+Q: How does your program handle errors?
+A: Check exit status of commands; log success/failure; possibly retry.
+
+4. Networking Questions
+
+Q: Can a DHCP server assign the same IP twice?
+A: Normally no, DHCP keeps a lease table to avoid conflicts.
+
+Q: What is a DHCP lease?
+A: Time duration for which a client can use the assigned IP.
+
+Q: Can DHCP work across subnets?
+A: Yes, via DHCP relay agent.
+
+5. Practical/Scenario Questions
+
+Q: How did you test remote software installation?
+A: Run program on one machine → software installed successfully on remote client → verified installation.
+
+Q: Can you install software remotely without user login?
+A: Yes, if you have admin/root privileges and remote access is enabled.
+
+Q: Difference between local and remote installation?
+A: Local → manually installed on machine. Remote → scripted or automated installation from another machine.
+prac 12

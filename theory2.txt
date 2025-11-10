@@ -1,0 +1,257 @@
+To set up a wired LAN using a Layer 2 switch, assign IP addresses to computers, test network connectivity using PING, and analyze the packets using the Wireshark (Simulation Mode) tool in Cisco Packet Tracer.”
+
+We’ll break this sentence into pieces and explain every terminology clearly 👇
+
+🧩 Terminology Explained
+Term	                                                                  Meaning (in simple words)	                                Why it’s used here
+Wired LAN	LAN = Local Area Network, a network that connects devices (like PCs) within a small area (office, lab, home). “Wired” means using physical cables instead of Wi-Fi.	You are connecting two or more PCs using Ethernet cables to share data within the same network.
+
+Layer 2 Switch	A network device that connects computers in a LAN. It works at Layer 2 (Data Link Layer) of the OSI model, meaning it forwards data using MAC addresses.	To allow multiple PCs to communicate with each other within the same network.
+
+IP Address	A unique logical address (like 192.168.1.10) assigned to each device for communication. It works at Layer 3 (Network Layer).	To identify each PC uniquely in the network.
+
+Assign IP Addresses to Computers	Giving each computer an IP (and subnet mask) manually or automatically.	So devices can send and receive data using IP packets.
+
+Network Connectivity	The ability of devices to communicate successfully over a network.	You’ll test this using the ping command.
+
+PING (Packet Internet Groper)	A utility/command that tests if one device can reach another device on the network. It uses ICMP (Internet Control Message Protocol) to send Echo Request and receive Echo Reply packets.	To verify that your LAN setup and IP configuration are working correctly.
+
+Wireshark	A network packet analyzer that captures and shows the details of data packets traveling through a network.	To observe how ICMP packets (Ping messages) move between devices.
+
+Simulation Mode	A built-in feature of Cisco Packet Tracer that works like Wireshark. It lets you capture and analyze packets step-by-step.	To visualize how ping packets travel from one PC to another.
+
+Cisco Packet Tracer	A network simulation software developed by Cisco. It lets you design, configure, and test networks virtually without real hardware.	The platform you’re using to perform the entire practical.
+
+⚙️ How it All Connects
+
+Wired LAN → You connect PCs using cables to a Layer 2 Switch.
+
+Assign IPs → You configure each PC with a unique IP in the same network.
+
+PING → You test if the PCs can communicate.
+
+Wireshark/Simulation Mode → You analyze how packets actually travel.
+
+So the flow is:
+Physical Connection → IP Configuration → Connectivity Test → Packet Analysis
+
+🧠 Possible Viva Questions (with Answers)
+
+Here’s a list of the most common viva questions teachers ask for this practical 👇
+
+🪛 Basic Setup Questions
+Q	A
+What is a LAN?	LAN (Local Area Network) connects computers within a small area like a lab or office.
+What is a Wired LAN?	A LAN where computers are connected using physical cables (Ethernet).
+What is a Switch?	A Layer 2 device that connects multiple devices in a network and forwards data based on MAC addresses.
+What is the difference between a Hub and a Switch?	A hub sends data to all ports (broadcasts), while a switch sends data only to the destination port (intelligent forwarding).
+Why do we use a Switch instead of a Hub?	Because switches are faster and reduce unnecessary traffic by using MAC address tables.
+💻 IP Addressing Questions
+Q	A
+What is an IP address?	A unique logical address assigned to every device on a network.
+What is a Subnet Mask?	It defines which part of the IP address is the network portion and which is the host portion.
+What is the IP version used here?	IPv4 (e.g., 192.168.1.10).
+Can two devices have the same IP address?	No, it causes an IP conflict and communication failure.
+What does 255.255.255.0 mean?	It’s a subnet mask indicating a Class C network, allowing up to 254 hosts.
+📡 Ping & Connectivity Questions
+Q	A
+What is the purpose of the ping command?	To test connectivity between two devices.
+Which protocol does ping use?	ICMP (Internet Control Message Protocol).
+What are the two ICMP message types used in ping?	Echo Request and Echo Reply.
+What happens if ping fails?	It indicates a network or configuration problem (wrong IP, cable issue, etc.).
+What layer of OSI model does ping work on?	Network Layer (Layer 3).
+🔍 Wireshark / Simulation Mode Questions
+Q	A
+What is Wireshark?	A tool used to capture and analyze network packets.
+What does Simulation Mode do in Packet Tracer?	It lets you view and analyze how data packets flow step-by-step.
+What details can you see in a packet capture?	Source and Destination MAC, IP addresses, ICMP type (Request/Reply), TTL, etc.
+What layers of the OSI model can you see in Simulation Mode?	Data Link (Ethernet), Network (IP), and Transport/ICMP layers.
+⚙️ Switch Configuration Questions
+Q	A
+Why do we assign an IP to the switch?	To manage or ping the switch remotely (management IP).
+What is VLAN 1?	The default virtual network (interface) on a switch used for management.
+Which cable connects a PC to a switch?	Copper Straight-Through Cable.
+What does the command no shutdown do?	It activates (turns on) the switch interface.
+What does write memory do?	Saves the current configuration so it’s not lost when the switch restarts.
+📚 Conceptual / OSI Model Questions
+Q	A
+At which OSI layer does a switch operate?	Data Link Layer (Layer 2).
+At which OSI layer does IP addressing occur?	Network Layer (Layer 3).
+What is the difference between MAC and IP addresses?	MAC = physical address, IP = logical address.
+Can a switch assign IPs automatically?	No, switches don’t assign IPs. You must configure manually or use a DHCP server.
+🧩 Bonus Viva Question
+Q	A
+What will happen if both PCs have IPs in different networks?	They will not be able to ping each other because a switch cannot route between different networks.
+What is the difference between Real-Time Mode and Simulation Mode in Packet Tracer?	Real-Time: shows continuous operation. Simulation: allows you to pause and view each packet’s details.
+✅ Quick Recap
+
+You’re creating a wired LAN (local network with cables).
+
+The Layer 2 switch connects your PCs using MAC addresses.
+
+You assign IP addresses so they can communicate logically.
+
+You test communication using ping (ICMP).
+
+You capture and analyze packets using Simulation Mode (like Wireshark).
+
+-------------------------------------------//----------------------------------------------
+🧩 Command-by-Command Explanation
+1️⃣ Switch> enable
+
+🔹 Meaning:
+Moves you from User EXEC mode to Privileged EXEC mode.
+
+🔹 Why needed:
+In Cisco devices, you can’t configure anything while in User mode (Switch>).
+You must enter Privileged mode (Switch#) to make system-level or configuration changes.
+
+🔹 Analogy:
+It’s like going from “Guest” to “Administrator” mode.
+
+2️⃣ Switch# configure terminal
+
+🔹 Meaning:
+Enters Global Configuration Mode, where you can modify switch-wide settings.
+
+🔹 Prompt changes to:
+Switch(config)#
+
+🔹 Why needed:
+Now you can configure interfaces, VLANs, IP addresses, etc.
+
+🔹 Analogy:
+It’s like opening the switch’s “Settings” page.
+
+3️⃣ Switch(config)# interface vlan 1
+
+🔹 Meaning:
+This command selects the VLAN 1 interface for configuration.
+
+🔹 VLAN 1:
+VLAN 1 is the default management VLAN on a Cisco switch.
+Although it’s a virtual interface, you can assign an IP to it so that you can manage or ping the switch.
+
+🔹 Why needed:
+Since a Layer 2 switch cannot have IPs on physical ports, you use VLAN 1 as a virtual interface to give the switch an IP address.
+
+🔹 Prompt changes to:
+Switch(config-if)#
+
+🔹 Analogy:
+Think of VLAN 1 as the “face” or “door” of the switch that has an IP.
+
+4️⃣ Switch(config-if)# ip address 192.168.1.2 255.255.255.0
+
+🔹 Meaning:
+Assigns the IP address 192.168.1.2 with a subnet mask 255.255.255.0 to the VLAN 1 interface.
+
+🔹 Why needed:
+This IP will act as the management IP of the switch — used to:
+
+Ping the switch from PCs
+
+Remotely manage it (Telnet/SSH)
+
+🔹 Analogy:
+You’re giving the switch its “home address” so others can find it on the network.
+
+5️⃣ Switch(config-if)# no shutdown
+
+🔹 Meaning:
+Activates (enables) the VLAN 1 interface.
+By default, interfaces can be administratively down — this command brings it up.
+
+🔹 Why needed:
+Without this, the interface stays disabled, and the IP address won’t be reachable.
+
+🔹 Output shown:
+
+%LINK-5-CHANGED: Interface Vlan1, changed state to up
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Vlan1, changed state to up
+
+
+🔹 Analogy:
+You’ve given the switch a phone number (IP), but this command actually turns on the phone.
+
+6️⃣ Switch(config-if)# exit
+
+🔹 Meaning:
+Exits from the interface configuration mode and goes back to Global Configuration mode.
+
+🔹 Prompt changes to:
+Switch(config)#
+
+🔹 Why needed:
+You’re done with interface-specific configuration, now you go back to general switch settings.
+
+7️⃣ Switch(config)# exit
+
+🔹 Meaning:
+Exits Global Configuration mode and returns to Privileged EXEC mode (Switch#).
+
+🔹 Why needed:
+You’ve completed all configurations; this takes you back to normal operation mode.
+
+8️⃣ Switch# write memory
+
+🔹 Meaning:
+Saves your running configuration (currently active in RAM) to startup configuration (NVRAM).
+
+🔹 Why needed:
+If you don’t save it, all your configurations will be lost when the switch is restarted.
+
+🔹 Alternate command:
+Switch# copy running-config startup-config
+
+🔹 Output shown:
+
+Building configuration...
+[OK]
+
+
+🔹 Analogy:
+Like saving your Word document — so changes aren’t lost when you shut down your PC.
+
+🧠 Summary Table
+Command	                                  Mode	                      Purpose
+enable	                          User EXEC → Privileged EXEC	Gain admin access
+configure terminal	        Privileged → Global Config	Enter configuration mode
+interface vlan 1	          Global → Interface Config	Select VLAN 1 for management
+ip address                      192.168.1.2 255.255.255.0	Interface Config	            Assign IP and subnet mask
+no shutdown	                        Interface Config	Activate interface
+exit	                          Interface Config → Global	Exit interface config
+exit	                               Global → Privileged	Exit global config
+write memory       	                      Privileged	Save configuration permanently
+🔍 After This
+
+Once you’ve done these steps:
+
+Your switch will have IP = 192.168.1.2
+
+You can ping it from a PC (with IP like 192.168.1.3)
+
+You can capture the ping packets in Simulation Mode (like Wireshark)
+------------------------------------------//---------------------------------------------
+Switch> enable
+Switch# configure terminal 
+Switch(config)# interface vlan 1 
+Switch(config-if)# ip address 192.168.1.2 255.255.255.0 
+Switch(config-if)# no shutdown 
+Switch(config-if)# exit
+Switch(config)# exit
+Switch# write memory
+
+#pc0 desktop then cmd
+ping 192.168.1.20
+#get reply
+--------------------------------------------//--------------------------------------------
+1️⃣ Open Cisco Packet Tracer → place 1 switch and 2 PCs.
+2️⃣ Connect PC0–Switch(Fa0/1) and PC1–Switch(Fa0/2) using straight-through cables.
+3️⃣ Assign IPs → PC0: 192.168.1.10, PC1: 192.168.1.20, subnet 255.255.255.0.
+4️⃣ (Optional) Configure switch IP → enable → conf t → int vlan 1 → ip add 192.168.1.2 255.255.255.0 → no shut → wr mem.
+5️⃣ On PC0 CMD, type ping 192.168.1.20 → ensure reply received.
+6️⃣ Switch to Simulation Mode, click Add Simple PDU, then PC0 → PC1.
+7️⃣ Use Auto Capture/Play or Capture/Forward to see packet flow.
+8️⃣ Click an ICMP event → PDU Details → check Ethernet, IP, ICMP layers.
+9️⃣ Save the file as LAN_Ping_Wireshark.pkt. ✅

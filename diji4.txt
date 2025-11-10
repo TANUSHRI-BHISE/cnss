@@ -1,0 +1,89 @@
+1. The graph
+Vgraph = {
+    'A': {'B': 2, 'C': 5},
+    'B': {'A': 2, 'C': 6, 'D': 1},
+    'C': {'A': 5, 'B': 6, 'D': 3, 'E': 8},
+    'D': {'B': 1, 'C': 3, 'E': 4},
+    'E': {'C': 8, 'D': 4}
+}
+
+
+The graph is stored as a dictionary of dictionaries.
+
+Each key ('A', 'B', ...) is a node.
+
+Each value is another dictionary showing neighbor nodes and the edge weight.
+
+Example: 'A': {'B': 2, 'C': 5} → A is connected to B (distance 2) and C (distance 5).
+
+2. Initial setup
+unvisited = list(graph.keys())
+dist = {node: float('inf') for node in graph}
+dist['A'] = 0
+
+
+unvisited → a list of nodes we haven’t processed yet.
+
+dist → dictionary storing the shortest known distance from 'A' to each node.
+
+Initially, we don’t know distances, so they are infinity (float('inf')).
+
+Distance from 'A' to itself is 0.
+
+3. Main loop
+while unvisited:
+    node = min(unvisited, key=lambda n: dist[n])
+    unvisited.remove(node)
+    for neigh, w in graph[node].items():
+        if dist[neigh] > dist[node] + w:
+            dist[neigh] = dist[node] + w
+
+
+Step 1: Pick the unvisited node with the smallest distance (node).
+
+Step 2: Remove it from unvisited → we are visiting it now.
+
+Step 3: For each neighbor of node (neigh) and edge weight w:
+
+Check if going through node gives a shorter distance to neigh.
+
+If yes, update the distance in dist.
+
+💡 Think of it like this:
+
+You are standing at 'A' and exploring the network.
+
+You always move to the closest unvisited node next.
+
+You keep updating the shortest path to neighbors as you go.
+
+4. Print results
+print("Shortest distances from A:")
+for node, d in dist.items():
+    print(f"A -> {node} = {d}")
+
+
+After the loop ends, dist contains the shortest distance from 'A' to every other node.
+
+It prints them nicely.
+
+5. Example Output
+Shortest distances from A:
+A -> A = 0
+A -> B = 2
+A -> C = 5
+A -> D = 3
+A -> E = 7
+
+
+This means:
+
+The shortest path from A to D is 3.
+
+The shortest path from A to E is 7.
+
+✅ In short:
+
+This code finds the shortest distances from a starting point (A) to all nodes in a weighted graph.
+
+It works step by step, always choosing the closest unvisited node and updating distances.

@@ -1,0 +1,186 @@
+pip install opencv-python
+python --version
+mkdir
+notepad server.py
+cd..
+
+
+make folder udp
+create 3 files 
+1)allfile.py ->genartes  audio, video,sample,script files
+2)udp_server->run on 1st terminal
+     python udp_server.py
+3)udp_client ->run on 2nd terminal
+on client side
+pip install opencv-python ->if needed do installation
+run
+ python allfile.py
+
+udp_client ->run on 2nd terminal
+   python udp_client.py
+
+
+
+
+⚙️ PART 1 — Folder Setup
+
+1️⃣ Open your desktop and create a folder named
+
+C:\TCP_project\udp_6
+
+
+2️⃣ Open CMD in that folder:
+
+Type cmd in the folder’s address bar → press Enter.
+
+You’ll now see:
+
+C:\TCP_project\udp_6>
+
+🧱 PART 2 — Create All Required Files
+Step 1️⃣: Create the file generator
+
+In that folder, make a new file called make_all_files.py and paste this:
+
+# make_all_files.py
+# ✅ Creates sample.txt, script.py, music.mp3, and video.mp4 safely.
+
+import os
+
+print("🎯 Starting file generation...")
+
+# 1️⃣ Create sample.txt
+with open("sample.txt", "w") as f:
+    f.write("This is a sample text file for UDP file transfer.\n")
+print("✅ sample.txt created.")
+
+# 2️⃣ Create script.py
+with open("script.py", "w") as f:
+    f.write('print("This is a test Python script for UDP transfer.")\n')
+print("✅ script.py created.")
+
+# 3️⃣ Create dummy music.mp3
+try:
+    from pydub.generators import Sine
+    tone = Sine(440).to_audio_segment(duration=2000)
+    tone.export("music.mp3", format="mp3")
+    print("✅ music.mp3 created using pydub.")
+except Exception:
+    with open("music.mp3", "wb") as f:
+        f.write(b"\x00" * 10000)
+    print("⚠️ pydub not installed. Created dummy music.mp3 instead.")
+
+# 4️⃣ Create dummy video.mp4
+try:
+    import cv2, numpy as np
+    width, height = 320, 240
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter('video.mp4', fourcc, 20.0, (width, height))
+    for _ in range(40):
+        frame = np.ones((height, width, 3), np.uint8) * 255
+        out.write(frame)
+    out.release()
+    print("✅ video.mp4 created using OpenCV.")
+except Exception:
+    with open("video.mp4", "wb") as f:
+        f.write(b"\x00" * 50000)
+    print("⚠️ OpenCV not installed. Created dummy video.mp4 instead.")
+
+print("\n🎉 All required files are ready in this folder:")
+print(os.getcwd())
+
+
+Then run it:
+
+python make_all_files.py
+
+
+✅ Output:
+
+sample.txt created.
+script.py created.
+music.mp3 created.
+video.mp4 created.
+All required files are ready in this folder: C:\TCP_project\udp_6
+
+🧩 PART 3 — Create UDP Client & Server
+🖥️ Server (Receiver)
+
+Make a file called udp_server.py:
+
+import socket
+
+IP = "0.0.0.0"   # Listen on all interfaces
+PORT = 5001
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind((IP, PORT))
+print(f"📡 Server listening on {IP}:{PORT}...")
+
+# Receive file info
+filename, addr = sock.recvfrom(1024)
+filename = filename.decode()
+print(f"Receiving file: {filename} from {addr}")
+
+with open("received_" + filename, "wb") as f:
+    while True:
+        data, addr = sock.recvfrom(4096)
+        if data == b"EOF":
+            break
+        f.write(data)
+
+print(f"✅ File '{filename}' received successfully.")
+sock.close()
+
+💻 Client (Sender)
+
+Make a file called udp_client.py:
+
+import socket, os
+
+SERVER_IP = "127.0.0.1"  # Change to Server PC IP if using 2 PCs
+PORT = 5001
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+files = ["sample.txt", "music.mp3", "video.mp4", "script.py"]
+
+def send_file(filename):
+    print(f"🚀 Sending file: {filename}")
+    sock.sendto(filename.encode(), (SERVER_IP, PORT))
+    with open(filename, "rb") as f:
+        data = f.read(4096)
+        while data:
+            sock.sendto(data, (SERVER_IP, PORT))
+            data = f.read(4096)
+    sock.sendto(b"EOF", (SERVER_IP, PORT))
+    print(f"✅ Sent '{filename}' successfully!\n")
+
+for file in files:
+    if os.path.exists(file):
+        send_file(file)
+    else:
+        print(f"⚠️ {file} not found, skipping...")
+
+sock.close()
+
+🧠 PART 4 — How to Run (Two Ways)
+🟢 OPTION 1: Run on Same PC
+
+If you’re testing on one computer only:
+
+In CMD window 1:
+
+python udp_server.py
+
+
+(Server starts listening)
+
+In CMD window 2:
+
+python udp_client.py
+
+
+(Client sends files)
+
+➡️ You’ll see “File received successfully” on the server side.

@@ -1,0 +1,338 @@
+🌐 The Main Idea of Your Practical
+
+The problem says:
+
+“Write a program using TCP socket for wired network to:
+(A) Say Hello to each other
+(B) Transfer a file.”
+
+That means you must:
+
+Make two computers talk to each other (Hello! 👋).
+
+Then send a file from one computer to the other.
+
+🧩 Step 1: What Is TCP?
+
+TCP = Transmission Control Protocol
+It’s the same system used when you open websites, send emails, or watch YouTube.
+
+It ensures:
+
+Data goes in correct order
+
+No part is lost or damaged
+
+Connection is reliable
+
+Think of TCP as a safe courier service — it won’t lose your parcel (data).
+
+🧠 Step 2: What Is a Socket?
+
+A socket is like a door in your computer through which data can enter or leave.
+
+When two computers talk using TCP:
+
+One computer opens a door and waits (Server)
+
+Another computer knocks and connects (Client)
+
+So you have:
+
+Server socket → waits for connections
+
+Client socket → connects to the server
+
+💬 Step 3: Saying “Hello” to Each Other
+1️⃣ Server (PC-2)
+
+Opens a door (for example, Port 5000)
+
+Waits for someone to connect
+
+2️⃣ Client (PC-1)
+
+Finds the server’s IP (e.g., 192.168.1.6)
+
+Connects to that door (Port 5000)
+
+Says “Hello from Client!”
+
+Server replies “Hello from Server!”
+
+✅ That’s part A — “Say Hello to Each Other”.
+
+📁 Step 4: File Transfer
+
+After saying Hello, the Client now sends a file.
+
+Example:
+
+Client reads a file (like sample.txt)
+
+Breaks it into chunks (small pieces of bytes)
+
+Sends each chunk through the TCP connection
+
+Server receives those chunks and saves them as a new file (received_file.txt)
+
+✅ That’s part B — “File Transfer”.
+
+⚙️ Step 5: The Program in Action (Behind the Scenes)
+
+Here’s what happens technically:
+
+Step	Action	                Who Does It	                Example
+1	Create TCP socket	Both	                    Like creating a phone line
+2	Bind to port (5000)	Server	                    Like connecting the line
+3	Listen for connections	Server	                       Waiting for a call
+4	Connect to server	Client	                        Dialing the number
+5	Exchange Hello	Both	Talking
+6	Send file	Client → Server	Sending parcel
+7	Save file	Server	Parcel received
+🧠 Step 6: Why We Use Two Python Files
+File	Role	Runs on
+server.py	Waits for connections and receives file	PC-2
+client.py	Connects to server and sends file	PC-1
+
+They both use Python’s socket library, which provides ready-made tools for TCP communication.
+
+💡 Step 7: What “Wired Network” Means
+
+It means your two PCs are connected through a LAN cable or same Wi-Fi network.
+That way, they share the same IP range (like 192.168.1.x) and can talk directly.
+
+🏁 Step 8: What You’re Proving
+
+This experiment shows that:
+
+You understand how TCP connections are created
+
+You can exchange messages reliably
+
+You can send files between computers using Python sockets
+
+In short, it’s like building your own mini WhatsApp for file sharing 😄
+--------------------------------------------------
+⚙️ Step-by-Step Explanation (Server Side)
+🧱 Step 1 — Import the socket library
+import socket
+
+
+This gives Python access to all the tools needed for network communication using TCP.
+
+🖥️ Step 2 — Define IP and Port
+host = '127.0.0.1'  # For testing on same PC, or server's LAN IP
+port = 12345
+
+
+'127.0.0.1' → special IP meaning “this computer itself” (localhost).
+
+You can replace this with another computer’s IP (like 192.168.1.6) if you want to connect from another PC.
+
+12345 is just a random port number — like choosing a door number.
+
+🔌 Step 3 — Create a TCP Socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+
+AF_INET → IPv4 address type
+
+SOCK_STREAM → TCP connection type (reliable, ordered communication)
+
+🪟 Step 4 — Bind and Listen
+server_socket.bind((host, port))
+server_socket.listen(1)
+print("Server listening...")
+
+
+bind() attaches the socket to the IP and port.
+
+listen(1) means “start listening for 1 client.”
+
+It now waits for someone to connect.
+
+📞 Step 5 — Accept Client Connection
+conn, addr = server_socket.accept()
+print(f"Connected by {addr}")
+
+
+The server pauses here and waits for a client to connect.
+
+When someone does, it prints their IP and port.
+
+Example:
+
+Connected by ('127.0.0.1', 50532)
+
+💬 Step 6 — Receive “Hello” Message
+msg = conn.recv(1024).decode('ascii')
+print("Client says:", msg)
+
+
+recv(1024) → receives up to 1024 bytes of data from the client.
+
+.decode('ascii') → converts the bytes into readable text.
+
+💬 Step 7 — Send Reply to Client
+conn.send("Hello from Server!".encode('ascii'))
+
+
+The server replies back to the client with a hello message.
+
+📁 Step 8 — Receive Filename
+filename = conn.recv(1024).decode('ascii')
+
+
+The client sends the name of the file it’s about to transfer (e.g., "sample.txt").
+
+The server stores that name to save the file with a new name (received_sample.txt).
+
+📂 Step 9 — Receive File Data
+with open("received_" + filename, "wb") as f:
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        f.write(data)
+
+
+Opens a new file in binary write mode (wb).
+
+Receives data from the client in chunks of 1024 bytes.
+
+Keeps writing until there’s no more data (i.e., client closed the connection).
+
+✅ Step 10 — Finish and Close
+print(f"File '{filename}' received successfully.")
+conn.close()
+
+
+Closes the connection after file transfer is done.
+---------------------------------------------------------
+Step-by-Step Explanation (Client Side)
+🧱 Step 1 — Import socket
+import socket
+
+
+This lets Python use networking (TCP/IP communication).
+
+🖥️ Step 2 — Define Server IP and Port
+host = '127.0.0.1'  # Server IP
+port = 12345
+
+
+This must match the server’s IP and port.
+
+If both programs (client and server) run on the same PC, 127.0.0.1 is fine.
+
+If you run the client from another PC on your LAN, replace 127.0.0.1 with the server’s IP address, e.g., 192.168.1.6.
+
+🔌 Step 3 — Create Socket and Connect
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect((host, port))
+
+
+socket() creates the TCP socket.
+
+connect() establishes a connection to the server that’s waiting on port 12345.
+
+Once connected:
+✅ The “handshake” happens — both sides are now linked.
+
+💬 Step 4 — Send Hello Message
+client_socket.send("Hello from Client!".encode('ascii'))
+
+
+The client sends a greeting message to the server.
+
+The .encode('ascii') converts the string into bytes (required for sending).
+
+💬 Step 5 — Receive Reply from Server
+response = client_socket.recv(1024).decode('ascii')
+print("Server says:", response)
+
+
+The client waits for the server’s reply (like a “Hello” back).
+
+recv(1024) reads up to 1024 bytes.
+
+.decode('ascii') converts bytes to text again.
+
+Example output:
+
+Server says: Hello from Server!
+
+📁 Step 6 — Send File Name
+filename = "sample.txt"
+client_socket.send(filename.encode('ascii'))  # send filename first
+
+
+The client first tells the server the name of the file it’s about to send.
+
+This helps the server know what name to use for saving it (e.g., received_sample.txt).
+
+📂 Step 7 — Send File Content
+with open(filename, "rb") as f:
+    data = f.read(1024)
+    while data:
+        client_socket.send(data)
+        data = f.read(1024)
+
+
+Opens the file in binary read mode (rb).
+
+Reads the file in 1 KB chunks (1024 bytes) and sends it continuously until the file is finished.
+
+🔚 Step 8 — Close the Connection
+client_socket.close()
+print(f"File '{filename}' sent successfully.")
+
+
+Ends the connection and prints a confirmation message.
+
+💻 HOW TO RUN BOTH FILES (step-by-step)
+🧩 Folder Setup
+
+Make a folder, e.g.:
+
+C:\TCP_Project
+
+
+Put both files in it:
+
+C:\TCP_Project\server.py
+C:\TCP_Project\client.py
+C:\TCP_Project\sample.txt   ← the file you want to send
+
+🪟 Step 1 — Open 2 CMD windows
+
+CMD 1 (Server side):
+
+cd C:\TCP_Project
+python server.py
+
+
+You should see:
+
+Server listening...
+
+
+CMD 2 (Client side):
+
+cd C:\TCP_Project
+python client.py
+
+
+You should see:
+
+Server says: Hello from Server!
+File 'sample.txt' sent successfully.
+
+🧾 Step 2 — Verify Output
+
+Now check your folder again.
+
+You’ll see:
+
+received_sample.txt

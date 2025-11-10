@@ -1,0 +1,98 @@
+Step-by-Step: Capture SSL Traffic and Find IP
+Step 1: Open Wireshark
+
+Launch Wireshark on your PC.
+
+Select the network interface your computer is using (Wi-Fi or Ethernet).
+
+Step 2: Start Capturing
+
+Click the green shark-fin button to start capture.
+
+Don’t worry about other traffic; we will filter later.
+
+Step 3: Open a Single HTTPS Website
+
+Open your browser.
+
+Type the website domain (HTTPS only, e.g., github.com) and press Enter.
+
+Do not open multiple websites at the same time to avoid confusion.
+
+Wait until the website fully loads.
+
+Step 4: Stop Capturing
+
+Go back to Wireshark.
+
+Click the red square button to stop the capture.
+
+Step 5: Filter TLS/SSL Traffic
+
+In Wireshark Display Filter, type:
+-----------
+tls||ssl
+tls
+----------
+
+or
+
+tcp.port == 443
+
+
+This shows only HTTPS (SSL/TLS) traffic.
+
+Step 6: Find the Server IP
+
+Method A: From TLS Handshake Packet
+
+Look for packets labeled Client Hello, Server Hello, or Certificate in the Info column.
+
+Click the packet → expand Internet Protocol (IP) layer → check Destination field.
+
+This is the website’s IP address.
+
+Method B: Using CMD Ping
+
+Open Command Prompt (Win + R → cmd).
+
+Type the domain of the website:
+---------------------
+ping github.com
+
+---------------------------
+Press Enter → Output shows:
+
+Pinging github.com [140.82.113.3] ...
+
+
+The IP in brackets [140.82.113.3] is the server IP.
+
+✅ This IP should match the destination IP in Wireshark.
+
+Step 7 (Optional): Confirm Traffic Belongs to the Site
+
+In Wireshark, you can filter by this IP:
+
+ip.addr == 140.82.113.3
+
+
+This ensures only traffic to/from GitHub is visible.
+
+Step 8 (Optional for Viva)
+
+Explain: “TLS packets captured include Client Hello, Server Hello, and Certificate.
+
+The server IP was confirmed using both Wireshark and ping.”
+
+Summary for Viva
+
+Open Wireshark → select interface → start capture.
+
+Open one HTTPS website.
+
+Stop capture → filter with tls or tcp.port==443.
+
+Identify destination IP from TLS handshake.
+
+Ping the website in CMD → confirm IP matches Wireshark.
